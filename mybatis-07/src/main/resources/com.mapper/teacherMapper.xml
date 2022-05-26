@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace绑定一个对应的mapper接口-->
+<mapper namespace="com.mapper.teacherMapper">
+
+    <!--id方法名-->
+    <select id="getTeacherByid" resultMap="srudentmap1" parameterType="_int">
+        select s.id sid,s.name sname, t.id tid,t.name tname
+        from student s,teacher t
+        where s.tid = t.id and t.id = #{tid}
+    </select>
+
+    <resultMap id="srudentmap1" type="teacher">
+        <result property="id" column="tid"/>
+        <result property="name" column="tname"/>
+<!--        javaType是一个指定实体类的属性类型-->
+<!--        集合中的泛型信息使用ofType  用来指定映射到List或者集合中的pojo，泛型中的约束类型-->
+        <collection property="students" ofType="student">
+            <result property="id" column="sid"/>
+            <result property="name" column="sname"/>
+            <result property="tid" column="tid"/>
+        </collection>
+    </resultMap>
+
+    <select id="getTeacherByid2" resultMap="teachermap" parameterType="_int">
+        select * from teacher where id = #{tid}
+    </select>
+
+    <resultMap id="teachermap" type="teacher" >
+        <collection property="students" ofType="student" javaType="ArrayList" column="id" select="getstudent"/>
+    </resultMap>
+
+    <select id="getstudent" resultType="student">
+        select * from student where tid = #{tid}
+    </select>
+</mapper>

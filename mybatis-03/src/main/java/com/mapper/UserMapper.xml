@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace绑定一个对应的mapper接口-->
+<mapper namespace="com.mapper.UserMapper">
+
+<!--    <select id="getUserbyid" resultType="User" parameterType="int">-->
+<!--&#45;&#45;      select id,name,pwd as password formmybatis.user where id = #{id}   起别名-->
+<!--        select * from mybatis.user where id = #{id}-->
+<!--    </select>-->
+<!--resertMap 映射-->
+    <resultMap id="UserMap" type="User">
+<!--        colum是数据库中的字段,property实体类中的属性(即字段到实体类属性的映射)-->
+<!--        相同的话不一定要映射-->
+<!--        <result column="id" property="id"/>-->
+<!--        <result column="name" property="name"/>-->
+        <result column="pwd" property="password"/>
+    </resultMap>
+    <select id="getUserbyid" resultMap="UserMap" parameterType="int">
+        select * from mybatis.user where id = #{id}
+    </select>
+
+    <select id="getUserByLimit" parameterType="map" resultMap="UserMap">
+        select * from mybatis.user limit #{startIndex} ,#{pageSize} ;
+    </select>
+
+    <select id="getUserByRowBounds" resultMap="UserMap">
+        select * from mybatis.user
+    </select>
+
+
+</mapper>

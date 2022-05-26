@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- configuration  核心配置文件-->
+<configuration>
+<!--    引入外部配置文件-->
+    <properties resource="db.properties">
+<!--        如果和配置文件中的属性同名，优先使用配置文件中的数据-->
+        <property name="pwd" value="123456"/>
+    </properties>
+
+<!--    <settings>-->
+<!--        开启驼峰命名匹配  a_xxx（数据库中）-> aXxxx（代码中的驼峰命名） -->
+<!--        <setting name="mapUnderscoreToCamelCase" value="true"/>-->
+<!--        是否开启缓存-->
+<!--        <setting name="cacheEnable" value="true"/> -->
+<!--        是否开启延迟加载-->
+<!--        <setting name="cacheEnable" value="true"/> -->
+<!--        指定日志的具体实现,未指定时将自动查找-->
+<!--        <setting name="logImpl" value="LOG4J"/>-->
+
+<!--    </settings> -->
+    <settings>
+<!--        标准日志工厂-->
+<!--        <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+
+<!--可以给实体类起别名-->
+    <typeAliases>
+        <typeAlias type="com.pojo.User" alias="User"/>
+<!--        实体类较少时使用第一种，较多使用第二章-->
+<!--        导入包，会自动扫描该包中的java bean  默认别名为类名，其首字母将小写-->
+<!--        <package name="com.pojo"/>-->
+<!--        使用扫描包时，使用注解即可自定义别名-->
+<!--        @Alias-->
+    </typeAliases>
+    <environments default="pro">
+        <!--       environment 环境 -->
+        <environment id="development">
+            <!--            transactionManager 事务管理-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+        <environment id="pro">
+            <!--            transactionManager 事务管理-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${pwd}"/>
+            </dataSource>
+        </environment>
+        <!--        <environment id="test">-->
+        <!--            <transactionManager type="JDBC"/>-->
+        <!--            <dataSource type="POOLED">-->
+        <!--                <property name="driver" value="${driver}"/>-->
+        <!--                <property name="url" value="${url}"/>-->
+        <!--                <property name="username" value="${username}"/>-->
+        <!--                <property name="password" value="${password}"/>-->
+        <!--            </dataSource>-->
+        <!--        </environment>-->
+    </environments>
+    <!--    每一个mapper.xml都要注册-->
+    <mappers>
+        <mapper resource="com/mapper/UserMapper.xml"/>
+
+<!--        <mapper class="com.mapper.UserMapper"/>-->
+<!--        用类的注意事项：接口和配置文件必须同名，且位于同一个包下-->
+<!--        <package name="com.mapper"/>-->
+<!--        注意点同上-->
+    </mappers>
+
+</configuration>
